@@ -8,8 +8,11 @@ app = Flask(__name__)
 
 # Реєструємо "блюпринти" для кожної групи ендпоінтів
 app.register_blueprint(users_bp, url_prefix='/api')
-'''app.register_blueprint(categories_bp, url_prefix='/api')
-app.register_blueprint(records_bp, url_prefix='/api')'''
+app.register_blueprint(categories_bp, url_prefix='/api')
+app.register_blueprint(records_bp, url_prefix='/api')
+@app.route("/")
+def home():
+    return "API is running. Use /api/users or other endpoints."
 
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))
