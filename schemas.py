@@ -18,3 +18,7 @@ class RecordSchema(Schema):
     date_time = fields.DateTime(dump_only=True)
     amount = fields.Float(required=True)
     currency = fields.Str(validate=validate.Length(equal=3))
+class CurrencySchema(Schema):
+    id = fields.Int(dump_only=True)
+    code = fields.Str(required=True)
+    name = fields.Str(required=True)

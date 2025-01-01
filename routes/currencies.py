@@ -1,7 +1,7 @@
 from flask import Blueprint, request, jsonify
 from marshmallow import ValidationError
+from data.models import Currency
 from schemas import CurrencySchema
-from models import Currency
 from applab2 import db
 
 currencies_bp = Blueprint('currencies', __name__)
