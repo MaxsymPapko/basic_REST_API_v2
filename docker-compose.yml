@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    container_name: flask-app
+    environment:
+      - FLASK_APP=applab2.py
+      - FLASK_ENV=development
+      - SQLALCHEMY_DATABASE_URI=postgresql://postgres:mysecretpassword@db:5432/mydatabase
+    ports:
+      - "5000:5000"
+    depends_on:
+      - db
+    volumes:
+      - .:/app
+
+  db:
+    image: postgres:latest
+    container_name: postgres-db
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=mysecretpassword
+      - POSTGRES_DB=mydatabase
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+volumes:
+  postgres_data:
