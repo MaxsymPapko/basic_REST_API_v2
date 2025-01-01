@@ -1,19 +1,24 @@
-import os
 from flask import Flask
-from routes.users import users_bp
-from routes.categories import categories_bp
-from routes.records import records_bp
+from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
 
-app = Flask(__name__)
+from config import Config
 
-# Реєструємо "блюпринти" для кожної групи ендпоінтів
-app.register_blueprint(users_bp, url_prefix='/api')
-app.register_blueprint(categories_bp, url_prefix='/api')
-app.register_blueprint(records_bp, url_prefix='/api')
-@app.route("/")
-def home():
-    return "API is running. Use /api/users or other endpoints."
+db = SQLAlchemy()
+migrate = Migrate()
+
+def create_app():
+    app = Flask(__name__)
+    app.config.from_object(Config)
+
+    db.init_app(app)
+    migrate.init_app(app, db)
+
+    from routes.users import users_bp
+    app.register_blueprint(users_bp, url_prefix='/api')
+
+    return app
 
 if __name__ == '__main__':
-    port = int(os.environ.get("PORT", 5000))
-    app.run(host="0.0.0.0", port=port)
+    app = create_app()
+    app.run(debug=True)
